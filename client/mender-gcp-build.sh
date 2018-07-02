@@ -12,7 +12,7 @@ git clone -b rocko git://git.openembedded.org/openembedded-core
 git clone -b rocko git://git.openembedded.org/meta-openembedded
 git clone -b rocko https://github.com/agherzan/meta-raspberrypi
 git clone https://github.com/Kcr19/meta-gcp-iot.git
-source oe-init-build-env
+source ./oe-init-build-env
 bitbake-layers add-layer ../meta-mender/meta-mender-core
 bitbake-layers add-layer ../meta-openembedded/meta-oe
 bitbake-layers add-layer ../meta-openembedded/meta-python
