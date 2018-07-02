@@ -46,3 +46,7 @@ git add prod.yml
 git commit -m 'production: final configuration'
 ./run up -d
 sudo ./run exec mender-useradm /usr/bin/useradm create-user --username=mender@example.com --password=Mender@2017
+export FULL_PROJECT=$(gcloud config list project --format "value(core.project)")
+export PROJECT="$(echo $FULL_PROJECT | cut -f2 -d ':')"
+export REGION='us-central1'
+gsutil cp keys-generated/certs/server.crt gs://$PROJECT-mender-server/certs/
