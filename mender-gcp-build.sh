@@ -21,16 +21,13 @@ bitbake-layers add-layer ../meta-openembedded/meta-networking
 bitbake-layers add-layer ../meta-raspberrypi
 bitbake-layers add-layer ../meta-mender/meta-mender-raspberrypi
 bitbake-layers add-layer ../meta-gcp-iotcore
-gsutil cp gs://mender-gcp/mender_gcp_scripts/local.conf ./conf/
 export FULL_PROJECT=$(gcloud config list project --format "value(core.project)")
 export PROJECT="$(echo $FULL_PROJECT | cut -f2 -d ':')"
 export REGION='us-central1'
+export MACHINE='raspberrypi3'
 gsutil cp gs://$PROJECT-mender-server/certs/server.crt ../meta-gcp-iotcore/recipes-mender/mender/files/
-bitbake rpi-basic-image
-export FULL_PROJECT=$(gcloud config list project --format "value(core.project)")
-export PROJECT="$(echo $FULL_PROJECT | cut -f2 -d ':')"
-export REGION='us-central1' #OPTIONALLY CHANGE THIS
+bitbake gcp-mender-demo-image
 gsutil cp ./tmp/deploy/images/raspberrypi3/rpi-basic-image-raspberrypi3.sdimg gs://$PROJECT-mender-builds
 gsutil cp gs://mender-gcp/mender_gcp_scripts/mender-artifacts/local.conf ./conf/
-bitbake rpi-basic-image
+bitbake gcp-mender-demo-image
 gsutil cp ./tmp/deploy/images/raspberrypi3/rpi-basic-image-raspberrypi3.mender gs://$PROJECT-mender-builds
