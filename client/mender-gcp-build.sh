@@ -11,7 +11,7 @@ git clone -b rocko git://github.com/mendersoftware/meta-mender
 git clone -b rocko git://git.openembedded.org/openembedded-core
 git clone -b rocko git://git.openembedded.org/meta-openembedded
 git clone -b rocko https://github.com/agherzan/meta-raspberrypi
-git clone https://github.com/Kcr19/meta-gcp-iotcore.git
+git clone https://github.com/Kcr19/meta-gcp-iot.git
 source oe-init-build-env
 bitbake-layers add-layer ../meta-mender/meta-mender-core
 bitbake-layers add-layer ../meta-openembedded/meta-oe
@@ -20,12 +20,12 @@ bitbake-layers add-layer ../meta-openembedded/meta-multimedia
 bitbake-layers add-layer ../meta-openembedded/meta-networking
 bitbake-layers add-layer ../meta-raspberrypi
 bitbake-layers add-layer ../meta-mender/meta-mender-raspberrypi
-bitbake-layers add-layer ../meta-gcp-iotcore
+bitbake-layers add-layer ../meta-gcp-iot
 export FULL_PROJECT=$(gcloud config list project --format "value(core.project)")
 export PROJECT="$(echo $FULL_PROJECT | cut -f2 -d ':')"
 export REGION='us-central1'
 export MACHINE='raspberrypi3'
-gsutil cp gs://$PROJECT-mender-server/certs/server.crt ../meta-gcp-iotcore/recipes-mender/mender/files/
+gsutil cp gs://$PROJECT-mender-server/certs/server.crt ../meta-gcp-iot/recipes-mender/mender/files/
 bitbake gcp-mender-demo-image
 gsutil cp ./tmp/deploy/images/raspberrypi3/rpi-basic-image-raspberrypi3.sdimg gs://$PROJECT-mender-builds
 gsutil cp gs://mender-gcp/mender_gcp_scripts/mender-artifacts/local.conf ./conf/
