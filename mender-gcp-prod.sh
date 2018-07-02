@@ -1,3 +1,6 @@
+#!/bin/sh
+#
+
 git clone -b 1.5.0 https://github.com/mendersoftware/integration mender-server
 cd mender-server
 git checkout -b my-production-setup
