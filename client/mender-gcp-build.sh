@@ -8,7 +8,6 @@ sudo apt-get -y install gawk wget git-core diffstat unzip texinfo gcc-multilib \
 [ -d poky ] || git clone -b rocko git://git.yoctoproject.org/poky
 cd poky
 [ -d meta-mender ] || git clone -b rocko git://github.com/mendersoftware/meta-mender
-[ -d openembedded-core ] || git clone -b rocko git://git.openembedded.org/openembedded-core
 [ -d meta-openembedded ] || git clone -b rocko git://git.openembedded.org/meta-openembedded
 [ -d meta-raspberrypi ] || git clone -b rocko https://github.com/agherzan/meta-raspberrypi
 [ -d meta-gcp-iot ] || git clone https://github.com/Kcr19/meta-gcp-iot.git
