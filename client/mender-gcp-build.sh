@@ -61,12 +61,14 @@ EOF
 export FULL_PROJECT=$(gcloud config list project --format "value(core.project)")
 export PROJECT="$(echo $FULL_PROJECT | cut -f2 -d ':')"
 export REGION='us-central1'
+export IMAGE='gcp-mender-demo-image'
+export MACHINE='raspberrypi3'
 gsutil cp gs://$PROJECT-mender-server/certs/server.crt ../meta-gcp-iot/recipes-mender/mender/files/
-bitbake gcp-mender-demo-image
-gsutil cp $(find ./tmp/deploy/images/raspberrypi3/gcp-mender-demo-image-raspberrypi3-*.sdimg -type f) gs://$PROJECT-mender-builds/gcp-mender-demo-image-raspberrypi3.sdimg
-gsutil cp $(find ./tmp/deploy/images/raspberrypi3/gcp-mender-demo-image-raspberrypi3-*.sdimg.bmap -type f) gs://$PROJECT-mender-builds/gcp-mender-demo-image-raspberrypi3.sdimg.bmap
+bitbake ${IMAGE}
+gsutil cp $(find ./tmp/deploy/images/${MACHINE}/${IMAGE}-${MACHINE}-*.sdimg -type f) gs://$PROJECT-mender-builds/${IMAGE}-${MACHINE}.sdimg
+gsutil cp $(find ./tmp/deploy/images/${MACHINE}/${IMAGE}-${MACHINE}-*.sdimg.bmap -type f) gs://$PROJECT-mender-builds/${IMAGE}-${MACHINE}.sdimg.bmap
 cat >> conf/auto.conf <<-	EOF
 	MENDER_ARTIFACT_NAME = "release-2"
 EOF
-bitbake gcp-mender-demo-image
-gsutil cp $(find ./tmp/deploy/images/raspberrypi3/gcp-mender-demo-image-raspberrypi3-*.mender -type f) gs://$PROJECT-mender-builds/gcp-mender-demo-image-raspberrypi3.mender
+bitbake ${IMAGE}
+gsutil cp $(find ./tmp/deploy/images/${MACHINE}/${IMAGE}-${MACHINE}-*.mender -type f) gs://$PROJECT-mender-builds/${IMAGE}-${MACHINE}.mender
