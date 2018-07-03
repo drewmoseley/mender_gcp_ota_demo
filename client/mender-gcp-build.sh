@@ -12,6 +12,7 @@ cd poky
 [ -d meta-mender ] || git clone -b rocko git://github.com/mendersoftware/meta-mender
 [ -d meta-openembedded ] || git clone -b rocko git://git.openembedded.org/meta-openembedded
 [ -d meta-raspberrypi ] || git clone -b rocko https://github.com/agherzan/meta-raspberrypi
+[ -d meta-java ] || git clone -b rocko git://git.yoctoproject.org/meta-java
 [ -d meta-iot-cloud ] || git clone -b rocko https://github.com/intel-iot-devkit/meta-iot-cloud.git
 [ -d meta-gcp-iot ] || git clone https://github.com/Kcr19/meta-gcp-iot.git
 source ./oe-init-build-env
@@ -28,6 +29,7 @@ bitbake-layers add-layer -F ../meta-openembedded/meta-oe
 bitbake-layers add-layer -F ../meta-openembedded/meta-python
 bitbake-layers add-layer -F ../meta-openembedded/meta-multimedia
 bitbake-layers add-layer -F ../meta-openembedded/meta-networking
+bitbake-layers add-layer -F ../meta-java
 bitbake-layers add-layer -F ../meta-raspberrypi
 bitbake-layers add-layer -F ../meta-mender/meta-mender-raspberrypi
 bitbake-layers add-layer -F ../meta-iot-cloud
