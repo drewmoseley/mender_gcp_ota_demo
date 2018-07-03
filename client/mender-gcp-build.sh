@@ -12,6 +12,14 @@ cd poky
 [ -d meta-raspberrypi ] || git clone -b rocko https://github.com/agherzan/meta-raspberrypi
 [ -d meta-gcp-iot ] || git clone https://github.com/Kcr19/meta-gcp-iot.git
 source ./oe-init-build-env
+bitbake-layers add-layer -F ../meta-mender/meta-mender-core
+bitbake-layers add-layer -F ../meta-openembedded/meta-oe
+bitbake-layers add-layer -F ../meta-openembedded/meta-python
+bitbake-layers add-layer -F ../meta-openembedded/meta-multimedia
+bitbake-layers add-layer -F ../meta-openembedded/meta-networking
+bitbake-layers add-layer -F ../meta-raspberrypi
+bitbake-layers add-layer -F ../meta-mender/meta-mender-raspberrypi
+bitbake-layers add-layer -F ../meta-gcp-iot
 cat > conf/auto.conf <<-	EOF
 	MACHINE="raspberrypi3"
 	
@@ -41,14 +49,6 @@ cat > conf/auto.conf <<-	EOF
 	PACKAGE_CLASSES = "package_ipk"
 	INHERIT += "rm_work"
 EOF
-bitbake-layers add-layer -F ../meta-mender/meta-mender-core
-bitbake-layers add-layer -F ../meta-openembedded/meta-oe
-bitbake-layers add-layer -F ../meta-openembedded/meta-python
-bitbake-layers add-layer -F ../meta-openembedded/meta-multimedia
-bitbake-layers add-layer -F ../meta-openembedded/meta-networking
-bitbake-layers add-layer -F ../meta-raspberrypi
-bitbake-layers add-layer -F ../meta-mender/meta-mender-raspberrypi
-bitbake-layers add-layer -F ../meta-gcp-iot
 export FULL_PROJECT=$(gcloud config list project --format "value(core.project)")
 export PROJECT="$(echo $FULL_PROJECT | cut -f2 -d ':')"
 export REGION='us-central1'
