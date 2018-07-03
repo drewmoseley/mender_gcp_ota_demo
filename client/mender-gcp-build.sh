@@ -12,14 +12,33 @@ cd poky
 [ -d meta-raspberrypi ] || git clone -b rocko https://github.com/agherzan/meta-raspberrypi
 [ -d meta-gcp-iot ] || git clone https://github.com/Kcr19/meta-gcp-iot.git
 source ./oe-init-build-env
-cat > conf/auto.conf <<EOF
-MACHINE="raspberrypi3"
-DISTRO_FEATURES_append += " systemd"
-VIRTUAL-RUNTIME_init_manager = "systemd"
-DISTRO_FEATURES_BACKFILL_CONSIDERED = "sysvinit"
-VIRTUAL-RUNTIME_initscripts = ""
-INHERIT += "mender-full"
-MENDER_ARTIFACT_NAME = "release-1"
+cat > conf/auto.conf <<-	EOF
+	MACHINE="raspberrypi3"
+	
+	# Switch to systemd - required for Mender
+	DISTRO_FEATURES_append += " systemd"
+	VIRTUAL-RUNTIME_init_manager = "systemd"
+	DISTRO_FEATURES_BACKFILL_CONSIDERED = "sysvinit"
+	VIRTUAL-RUNTIME_initscripts = ""
+	
+	# Configure Mender
+	INHERIT += "mender-full"
+	MENDER_ARTIFACT_NAME = "release-1"
+	MENDER_SERVER_URL = "https://mender.gcpotademo.com"
+	IMAGE_INSTALL_append = " kernel-image kernel-devicetree"
+	
+	# RPI specific additions for Mender
+	RPI_USE_U_BOOT = "1"
+	MENDER_PARTITION_ALIGNMENT_KB = "4096"
+	MENDER_BOOT_PART_SIZE_MB = "40"
+	MENDER_STORAGE_TOTAL_SIZE_MB_rpi = "4000"
+	MENDER_DATA_PART_SIZE_MB_rpi = "1000"
+	##IMAGE_ROOTFS_MAXSIZE_rpi ?= "20000000"
+	IMAGE_FSTYPES_remove += " rpi-sdimg"
+	SDIMG_ROOTFS_TYPE = "ext4"
+	
+	PACKAGE_CLASSES = "package_ipk"
+	INHERIT += "rm_work"
 EOF
 bitbake-layers add-layer -F ../meta-mender/meta-mender-core
 bitbake-layers add-layer -F ../meta-openembedded/meta-oe
@@ -35,8 +54,8 @@ export REGION='us-central1'
 gsutil cp gs://$PROJECT-mender-server/certs/server.crt ../meta-gcp-iot/recipes-mender/mender/files/
 bitbake gcp-mender-demo-image
 gsutil cp ./tmp/deploy/images/raspberrypi3/rpi-basic-image-raspberrypi3.sdimg gs://$PROJECT-mender-builds
-cat >> conf/auto.conf <<EOF
-MENDER_ARTIFACT_NAME = "release-2"
+cat >> conf/auto.conf <<-	EOF
+	MENDER_ARTIFACT_NAME = "release-2"
 EOF
 bitbake gcp-mender-demo-image
 gsutil cp ./tmp/deploy/images/raspberrypi3/rpi-basic-image-raspberrypi3.mender gs://$PROJECT-mender-builds
