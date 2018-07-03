@@ -12,6 +12,14 @@ cd poky
 [ -d meta-raspberrypi ] || git clone -b rocko https://github.com/agherzan/meta-raspberrypi
 [ -d meta-gcp-iot ] || git clone https://github.com/Kcr19/meta-gcp-iot.git
 source ./oe-init-build-env
+if [ -d ~/downloads ] ; then
+    rmdir ./downloads
+    ln -s ~/downloads .
+fi
+if [ -d ~/sstate-cache ]; then
+    rmdir ./sstate-cache
+    ln -s ~/sstate-cache .
+fi
 bitbake-layers add-layer -F ../meta-mender/meta-mender-core
 bitbake-layers add-layer -F ../meta-openembedded/meta-oe
 bitbake-layers add-layer -F ../meta-openembedded/meta-python
