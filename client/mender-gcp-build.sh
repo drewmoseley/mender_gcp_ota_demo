@@ -34,7 +34,7 @@ cat > conf/auto.conf <<-	EOF
 	MENDER_STORAGE_TOTAL_SIZE_MB_rpi = "4000"
 	MENDER_DATA_PART_SIZE_MB_rpi = "1000"
 	##IMAGE_ROOTFS_MAXSIZE_rpi ?= "20000000"
-	IMAGE_FSTYPES_remove += " rpi-sdimg"
+	IMAGE_FSTYPES_remove += " rpi-sdimg ext3"
 	SDIMG_ROOTFS_TYPE = "ext4"
 	
 	PACKAGE_CLASSES = "package_ipk"
