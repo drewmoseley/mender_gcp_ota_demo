@@ -25,6 +25,7 @@ cat > conf/auto.conf <<-	EOF
 	INHERIT += "mender-full"
 	MENDER_ARTIFACT_NAME = "release-1"
 	MENDER_SERVER_URL = "https://mender.gcpotademo.com"
+	GCP_IOT_MENDER_DEMO_HOST_IP_ADDRESS = "35.192.46.79"
 	IMAGE_INSTALL_append = " kernel-image kernel-devicetree"
 	
 	# RPI specific additions for Mender
