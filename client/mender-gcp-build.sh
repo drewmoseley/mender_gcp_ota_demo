@@ -13,14 +13,14 @@ git clone -b rocko git://git.openembedded.org/meta-openembedded
 git clone -b rocko https://github.com/agherzan/meta-raspberrypi
 git clone https://github.com/Kcr19/meta-gcp-iot.git
 source ./oe-init-build-env
-bitbake-layers add-layer ../meta-mender/meta-mender-core
-bitbake-layers add-layer ../meta-openembedded/meta-oe
-bitbake-layers add-layer ../meta-openembedded/meta-python
-bitbake-layers add-layer ../meta-openembedded/meta-multimedia
-bitbake-layers add-layer ../meta-openembedded/meta-networking
-bitbake-layers add-layer ../meta-raspberrypi
-bitbake-layers add-layer ../meta-mender/meta-mender-raspberrypi
-bitbake-layers add-layer ../meta-gcp-iot
+bitbake-layers add-layer -F ../meta-mender/meta-mender-core
+bitbake-layers add-layer -F ../meta-openembedded/meta-oe
+bitbake-layers add-layer -F ../meta-openembedded/meta-python
+bitbake-layers add-layer -F ../meta-openembedded/meta-multimedia
+bitbake-layers add-layer -F ../meta-openembedded/meta-networking
+bitbake-layers add-layer -F ../meta-raspberrypi
+bitbake-layers add-layer -F ../meta-mender/meta-mender-raspberrypi
+bitbake-layers add-layer -F ../meta-gcp-iot
 export FULL_PROJECT=$(gcloud config list project --format "value(core.project)")
 export PROJECT="$(echo $FULL_PROJECT | cut -f2 -d ':')"
 export REGION='us-central1'
