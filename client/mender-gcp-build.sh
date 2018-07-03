@@ -46,14 +46,13 @@ cat > conf/auto.conf <<-	EOF
 	IMAGE_FSTYPES_append += " sdimg.bmap"
 	
 	# RPI specific additions for Mender
-	RPI_USE_U_BOOT = "1"
-	MENDER_PARTITION_ALIGNMENT_KB = "4096"
-	MENDER_BOOT_PART_SIZE_MB = "40"
-	MENDER_STORAGE_TOTAL_SIZE_MB_rpi = "4000"
-	MENDER_DATA_PART_SIZE_MB_rpi = "1000"
-	##IMAGE_ROOTFS_MAXSIZE_rpi ?= "20000000"
-	IMAGE_FSTYPES_remove += " rpi-sdimg ext3"
-	SDIMG_ROOTFS_TYPE = "ext4"
+	RPI_USE_U_BOOT_rpi = "1"
+	MENDER_PARTITION_ALIGNMENT_KB_rpi = "4096"
+	MENDER_BOOT_PART_SIZE_MB_rpi = "40"
+	MENDER_STORAGE_TOTAL_SIZE_MB_rpi = "2500"
+	MENDER_DATA_PART_SIZE_MB_rpi = "500"
+	IMAGE_FSTYPES_remove_rpi += " rpi-sdimg ext3"
+	SDIMG_ROOTFS_TYPE_rpi = "ext4"
 	
 	PACKAGE_CLASSES = "package_ipk"
 	INHERIT += "rm_work"
