@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 
 sudo apt-get update
@@ -13,6 +13,15 @@ git clone -b rocko git://git.openembedded.org/meta-openembedded
 git clone -b rocko https://github.com/agherzan/meta-raspberrypi
 git clone https://github.com/Kcr19/meta-gcp-iot.git
 source ./oe-init-build-env
+cat > conf/auto.conf <<EOF
+MACHINE="raspberrypi3"
+DISTRO_FEATURES_append += " systemd"
+VIRTUAL-RUNTIME_init_manager = "systemd"
+DISTRO_FEATURES_BACKFILL_CONSIDERED = "sysvinit"
+VIRTUAL-RUNTIME_initscripts = ""
+INHERIT += "mender-full"
+MENDER_ARTIFACT_NAME = "release-1"
+EOF
 bitbake-layers add-layer -F ../meta-mender/meta-mender-core
 bitbake-layers add-layer -F ../meta-openembedded/meta-oe
 bitbake-layers add-layer -F ../meta-openembedded/meta-python
@@ -24,10 +33,11 @@ bitbake-layers add-layer -F ../meta-gcp-iot
 export FULL_PROJECT=$(gcloud config list project --format "value(core.project)")
 export PROJECT="$(echo $FULL_PROJECT | cut -f2 -d ':')"
 export REGION='us-central1'
-export MACHINE='raspberrypi3'
 gsutil cp gs://$PROJECT-mender-server/certs/server.crt ../meta-gcp-iot/recipes-mender/mender/files/
 bitbake gcp-mender-demo-image
 gsutil cp ./tmp/deploy/images/raspberrypi3/rpi-basic-image-raspberrypi3.sdimg gs://$PROJECT-mender-builds
-gsutil cp gs://mender-gcp/mender_gcp_scripts/mender-artifacts/local.conf ./conf/
+cat >> conf/auto.conf <<EOF
+MENDER_ARTIFACT_NAME = "release-2"
+EOF
 bitbake gcp-mender-demo-image
 gsutil cp ./tmp/deploy/images/raspberrypi3/rpi-basic-image-raspberrypi3.mender gs://$PROJECT-mender-builds
