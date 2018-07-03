@@ -43,6 +43,7 @@ cat > conf/auto.conf <<-	EOF
 	MENDER_SERVER_URL = "https://mender.gcpotademo.com"
 	GCP_IOT_MENDER_DEMO_HOST_IP_ADDRESS = "35.192.46.79"
 	IMAGE_INSTALL_append = " kernel-image kernel-devicetree"
+	IMAGE_FSTYPES_append += " sdimg.bmap"
 	
 	# RPI specific additions for Mender
 	RPI_USE_U_BOOT = "1"
@@ -62,9 +63,10 @@ export PROJECT="$(echo $FULL_PROJECT | cut -f2 -d ':')"
 export REGION='us-central1'
 gsutil cp gs://$PROJECT-mender-server/certs/server.crt ../meta-gcp-iot/recipes-mender/mender/files/
 bitbake gcp-mender-demo-image
-gsutil cp ./tmp/deploy/images/raspberrypi3/rpi-basic-image-raspberrypi3.sdimg gs://$PROJECT-mender-builds
+gsutil cp $(find ./tmp/deploy/images/raspberrypi3/gcp-mender-demo-image-raspberrypi3-*.sdimg -type f) gs://$PROJECT-mender-builds/gcp-mender-demo-image-raspberrypi3.sdimg
+gsutil cp $(find ./tmp/deploy/images/raspberrypi3/gcp-mender-demo-image-raspberrypi3-*.sdimg.bmap -type f) gs://$PROJECT-mender-builds/gcp-mender-demo-image-raspberrypi3.sdimg.bmap
 cat >> conf/auto.conf <<-	EOF
 	MENDER_ARTIFACT_NAME = "release-2"
 EOF
 bitbake gcp-mender-demo-image
-gsutil cp ./tmp/deploy/images/raspberrypi3/rpi-basic-image-raspberrypi3.mender gs://$PROJECT-mender-builds
+gsutil cp $(find ./tmp/deploy/images/raspberrypi3/gcp-mender-demo-image-raspberrypi3-*.mender -type f) gs://$PROJECT-mender-builds/gcp-mender-demo-image-raspberrypi3.mender
