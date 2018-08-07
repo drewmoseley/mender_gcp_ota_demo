@@ -1,0 +1,10 @@
+[Unit]
+Description=waits for config from IoT core, then activates mender agent
+After=multi-user.target
+
+[Service]
+Type=idle
+ExecStart=/usr/bin/python /var/gcp/activate_agent.py
+
+[Install]
+WantedBy=multi-user.target
