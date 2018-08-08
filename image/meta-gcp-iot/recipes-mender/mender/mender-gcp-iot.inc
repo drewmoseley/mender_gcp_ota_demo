@@ -2,7 +2,7 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
 SRC_URI += " \
     file://gcp-iot-mender-device-identity \
-    file://server.crt \
+    file://mender.conf \
 "
 
 do_install_append() {
