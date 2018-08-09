@@ -21,6 +21,7 @@ IMAGE_INSTALL_append = " \
                      python-pyjwt \
                      python-docs-samples-mqtt-example \
                      mender-gcp-delay-server-connection \
+                     mender-google-activation-agent \
 "
 
 ###DISTRO_FEATURES_append += " wifi"
