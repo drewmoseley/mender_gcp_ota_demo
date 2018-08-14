@@ -1,12 +1,12 @@
 #!/bin/sh
 #
 
-export PROJECT_ID="$(echo $FULL_PROJECT | cut -f2 -d ':')"
-export REGION_ID='us-central1'
+if [ ! -e /opt/gcp/etc/gcp-config.sh ]; then
+    echo "Error. Unable to locate gcp-config.sh."
+    exit 1
+fi
 
-export REGISTRY_ID='mender-demo'
-export DEVICE_ID='mender_ota_rasp3'
-
+source /opt/gcp/etc/gcp-config.sh
 python cloudiot_mqtt_example.py \
        --project_id "${PROJECT_ID}" \
        --registry_id "${REGISTRY_ID}" \

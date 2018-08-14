@@ -23,4 +23,4 @@ do_install() {
   install -m 0755 ${WORKDIR}/activate_agent.py ${D}/opt/gcp/${bindir}/
 }
 
-RDEPENDS_${PN} += "bash python"
+RDEPENDS_${PN} += "bash python gcp-config"

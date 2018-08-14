@@ -201,10 +201,29 @@ def get_client(
 def main():
     global minimum_backoff_time
 
-    #  TODO these need to be pulled from image build
-    registry_id = "mender-demo"
-    project_id = "mender-gcp-iot"
-    cloud_region = "us-central1"
+    registry_id = None
+    project_id = None
+    cloud_region = None
+    try:
+        with open("/opt/gcp/etc/gcp-config.sh","r") as config_file:
+            for line in config_file:
+                if "export REGISTRY_ID=" in line:
+                    registry_id = line.replace("export REGISTRY_ID=", "").replace('"', "")
+                if "export PROJECT_ID=" in line:
+                    project_id = line.replace("export PROJECT_ID=", "").replace('"', "")
+                if "export REGION_ID=" in line:
+                    cloud_region = line.replace("export REGION_ID=", "").replace('"', "")
+    except IOError as e:
+        print "I/O error({0}): {1}".format(e.errno, e.strerror)
+    except:
+        print "Unexpected error:", sys.exc_info()[0]
+    else:
+        if registry_id = None:
+            sys.exit("Error. REGISTRY_ID undefined")
+        if project_id = None:
+            sys.exit("Error. PROJECT_ID undefined")
+        if cloud_region = None:
+            sys.exit("Error. REGION_ID undefined")
 
     # Publish to the events or state topic based on the flag.
     sub_topic = 'state'

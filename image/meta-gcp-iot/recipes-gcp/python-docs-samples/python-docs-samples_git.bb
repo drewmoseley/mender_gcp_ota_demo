@@ -24,4 +24,4 @@ do_install() {
     install -m 0700 ${S}/iot/api-client/mqtt_example/resources/roots.pem ${D}/opt/gcp/${sysconfdir}
 }
 
-RDEPENDS_${PN} += "bash python"
+RDEPENDS_${PN} += "bash python gcp-config"
