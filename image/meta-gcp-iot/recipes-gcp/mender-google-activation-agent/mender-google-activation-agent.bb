@@ -13,14 +13,14 @@ inherit systemd
 SYSTEMD_SERVICE_${PN} = "${PN}.service"
 FILES_${PN} += " \
     ${systemd_unitdir}/system/${PN}.service \
-    /opt/gcp/ \
+    /opt/gcp${bindir}/activate_agent.py \
 "
 
 do_install() {
   install -d ${D}${systemd_unitdir}/system
   install -m 0644 ${WORKDIR}/${PN}.service ${D}${systemd_unitdir}/system/
-  install -d ${D}/opt/gcp/${bindir}
-  install -m 0755 ${WORKDIR}/activate_agent.py ${D}/opt/gcp/${bindir}/
+  install -d ${D}/opt/gcp${bindir}
+  install -m 0755 ${WORKDIR}/activate_agent.py ${D}/opt/gcp${bindir}/
 }
 
 RDEPENDS_${PN} += "bash python gcp-config"

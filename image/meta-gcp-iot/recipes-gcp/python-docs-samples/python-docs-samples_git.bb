@@ -14,14 +14,18 @@ B = "${WORKDIR}/build"
 
 PACKAGES += "${PN}-mqtt-example"
 
-FILES_${PN}-mqtt-example = "/opt/gcp/*"
+FILES_${PN}-mqtt-example = " \
+    /opt/gcp${bindir}/cloudiot_mqtt_example.py \
+    /opt/gcp${bindir}/start-mqtt-example.sh \
+    /opt/gcp${sysconfdir}/roots.pem \
+"
 
 do_install() {
-    install -m 0700 -d ${D}/opt/gcp/${bindir}
-    install -m 0700 ${S}/iot/api-client/mqtt_example/cloudiot_mqtt_example.py ${D}/opt/gcp/${bindir}
-    install -m 0700 ${WORKDIR}/start-mqtt-example.sh ${D}/opt/gcp/${bindir}
-    install -m 0700 -d ${D}/opt/gcp/${sysconfdir}
-    install -m 0700 ${S}/iot/api-client/mqtt_example/resources/roots.pem ${D}/opt/gcp/${sysconfdir}
+    install -m 0700 -d ${D}/opt/gcp${bindir}
+    install -m 0700 ${S}/iot/api-client/mqtt_example/cloudiot_mqtt_example.py ${D}/opt/gcp${bindir}
+    install -m 0700 ${WORKDIR}/start-mqtt-example.sh ${D}/opt/gcp${bindir}
+    install -m 0700 -d ${D}/opt/gcp${sysconfdir}
+    install -m 0700 ${S}/iot/api-client/mqtt_example/resources/roots.pem ${D}/opt/gcp${sysconfdir}
 }
 
 RDEPENDS_${PN} += "bash python gcp-config"
