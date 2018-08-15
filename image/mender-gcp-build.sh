@@ -74,7 +74,6 @@ export MACHINE='raspberrypi3'
 # Ensure that the GCP variables defined above are passed into the bitbake environment
 export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE PROJECT_ID REGION_ID REGISTRY_ID DEVICE_ID"
 
-gsutil cp gs://$PROJECT-mender-server/certs/server.crt ../mender_gcp_ota_demo/image/meta-gcp-iot/recipes-mender/mender/files/
 bitbake ${IMAGE}
 gsutil cp $(find ./tmp/deploy/images/${MACHINE}/${IMAGE}-${MACHINE}-*.sdimg -type f) gs://$PROJECT_ID-mender-builds/${IMAGE}-${MACHINE}.sdimg
 gsutil cp $(find ./tmp/deploy/images/${MACHINE}/${IMAGE}-${MACHINE}-*.sdimg.bmap -type f) gs://$PROJECT_ID-mender-builds/${IMAGE}-${MACHINE}.sdimg.bmap
