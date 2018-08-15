@@ -17,11 +17,11 @@ cd poky
 [ -d meta-gcp-iot ] || git clone -b mender-gcp https://github.com/Kcr19/mender_gcp_ota_demo.git
 source ./oe-init-build-env
 if [ -d ~/downloads ] ; then
-    rmdir ./downloads
+    rm -rf ./downloads
     ln -s ~/downloads .
 fi
 if [ -d ~/sstate-cache ]; then
-    rmdir ./sstate-cache
+    rm -rf ./sstate-cache
     ln -s ~/sstate-cache .
 fi
 bitbake-layers add-layer -F ../meta-mender/meta-mender-core
