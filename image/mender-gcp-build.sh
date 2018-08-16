@@ -59,6 +59,7 @@ cat > conf/auto.conf <<-	EOF
 	MENDER_DATA_PART_SIZE_MB_rpi = "500"
 	IMAGE_FSTYPES_remove_rpi += " rpi-sdimg ext3"
 	SDIMG_ROOTFS_TYPE_rpi = "ext4"
+	ENABLE_UART_rpi = "1"
 	
 	PACKAGE_CLASSES = "package_ipk"
 	INHERIT += "rm_work"
