@@ -245,7 +245,7 @@ def main():
             "/var/lib/mender/mender-agent.pem", #  private_key_file
             'RS256',
             #  TODO include this in bake at a different path
-            "/var/gcp/roots.pem",
+            "/opt/gcp/etc/roots.pem",
             "mqtt.googleapis.com",
             "443")
         return client
