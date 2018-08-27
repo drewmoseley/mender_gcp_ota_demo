@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Copyright 2017 Google Inc.
+# Copyright 2018 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import random
 import ssl
 import time
 import subprocess
+import sys
 
 import jwt
 import paho.mqtt.client as mqtt
@@ -141,6 +142,7 @@ def on_message(unused_client, unused_userdata, message):
             f.write("ok")
         print('Received message \'{}\' on topic \'{}\' with Qos {}'.format(
                 payload, message.topic, str(message.qos)))
+        sys.exit(0)
     except ValueError:
         print("no valid config")
 
@@ -169,10 +171,11 @@ def get_client(
 
     # With Google Cloud IoT Core, the username field is ignored, and the
     # password field is used to transmit a JWT to authorize the device.
+    pw = create_jwt(project_id, private_key_file, algorithm)
     client.username_pw_set(
             username='unused',
-            password=create_jwt(
-                    project_id, private_key_file, algorithm))
+            password=pw
+            )
 
     # Enable SSL/TLS support.
     client.tls_set(ca_certs=ca_certs, tls_version=ssl.PROTOCOL_TLSv1_2)
@@ -208,21 +211,21 @@ def main():
         with open("/opt/gcp/etc/gcp-config.sh","r") as config_file:
             for line in config_file:
                 if "export REGISTRY_ID=" in line:
-                    registry_id = line.replace("export REGISTRY_ID=", "").replace('"', "")
+                    registry_id = line.replace("export REGISTRY_ID=", "").replace('"', "").strip()
                 if "export PROJECT_ID=" in line:
-                    project_id = line.replace("export PROJECT_ID=", "").replace('"', "")
+                    project_id = line.replace("export PROJECT_ID=", "").replace('"', "").strip()
                 if "export REGION_ID=" in line:
-                    cloud_region = line.replace("export REGION_ID=", "").replace('"', "")
+                    cloud_region = line.replace("export REGION_ID=", "").replace('"', "").strip()
     except IOError as e:
         print "I/O error({0}): {1}".format(e.errno, e.strerror)
     except:
         print "Unexpected error:", sys.exc_info()[0]
     else:
-        if registry_id = None:
+        if registry_id == None:
             sys.exit("Error. REGISTRY_ID undefined")
-        if project_id = None:
+        if project_id == None:
             sys.exit("Error. PROJECT_ID undefined")
-        if cloud_region = None:
+        if cloud_region == None:
             sys.exit("Error. REGION_ID undefined")
 
     # Publish to the events or state topic based on the flag.
