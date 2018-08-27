@@ -29,7 +29,7 @@ admin.initializeApp({
 });
 
 // TODO trim trailing slash and space
-const MENDER_URL = 'https://35.192.46.79';
+const MENDER_URL = functions.config().mender.url;
 
 // TODO not safe to assume one registry - but for caching for now
 let dm = new DeviceManager('mender-demo');
@@ -46,8 +46,8 @@ async function menderPreAuth(device: any) {
     method: 'post',
     baseURL: `${MENDER_URL}/`,
     auth: {
-      username: 'mender@example.com',
-      password: 'Mender@2017'
+      username: functions.config().mender.username,
+      password: functions.config().mender.pw
     },
   };
 
@@ -70,7 +70,6 @@ async function menderPreAuth(device: any) {
       key: device.credentials[0].publicKey.key.trim() + "\n"
     },
   };
-  // console.log(preauthConfig);
   try {
     let preauth: AxiosResponse = await axios(preauthConfig);
     return 'device created ok';
@@ -83,13 +82,8 @@ async function menderPreAuth(device: any) {
   
 }
 
-// TODO make async as well
 export const deviceEvent = functions.pubsub.topic('registration-events').onPublish(async (message) => {
-  // ...
-  // let buf = Buffer.from(event.data.data, 'base64');
-  // let audit = JSON.parse(String(buf));
   let audit = message.json;
-  // console.log(audit.resource);
   console.log(audit.protoPayload.methodName);
   switch (audit.protoPayload.methodName) {
     case 'google.cloud.iot.v1.DeviceManager.CreateDevice':
