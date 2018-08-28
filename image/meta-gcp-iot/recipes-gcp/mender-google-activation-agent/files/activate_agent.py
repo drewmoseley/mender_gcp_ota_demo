@@ -25,6 +25,7 @@ import os
 import random
 import ssl
 import time
+import shutil
 import subprocess
 import sys
 
@@ -142,6 +143,15 @@ def on_message(unused_client, unused_userdata, message):
             f.write("ok")
         print('Received message \'{}\' on topic \'{}\' with Qos {}'.format(
                 payload, message.topic, str(message.qos)))
+        with open('/etc/hosts') as f:
+            current_hosts = f.read()
+
+        # add artifact alias
+        if not 'gcs' in current_hosts:
+            with open('/etc/hosts', 'a') as f:
+                f.write("{}  gcs.mender.gcpotademo.com\n".format(config["mender_server"].lstrip('https://')))
+
+        subprocess.call(["/bin/systemctl", "restart", "mender.service"])
         sys.exit(0)
     except ValueError:
         print("no valid config")
@@ -203,6 +213,20 @@ def get_client(
 
 def main():
     global minimum_backoff_time
+
+    # wait until the mender agent has created the device private key
+    while not os.path.exists("/var/lib/mender/mender-agent.pem"):
+        time.sleep(1)
+
+    while not os.path.exists("/etc/machine-id"):
+        time.sleep(1)
+
+    if not os.path.exists("/data/machine-id"):
+        shutil.copy("/etc/machine-id", "/data/machine-id")
+        os.unlink("/etc/machine-id")
+        os.symlink("/data/machine-id", "/etc/machine-id")
+
+
 
     registry_id = None
     project_id = None
