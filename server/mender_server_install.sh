@@ -23,7 +23,7 @@ cd mender-server
 git checkout -b my-production-setup
 cp -a template production
 cd production
-gsutil cp gs://mender-gcp/mender_gcp_scripts/prod.yml ./
+wget -O prod.yml https://raw.githubusercontent.com/Kcr19/mender_gcp_ota_demo/mender-gcp/server/prod.yml
 sed -i -e 's#/template/#/production/#g' prod.yml
 git config --global user.email "test@example.com"
 git config --global user.name test.mender "Test"
@@ -45,7 +45,7 @@ docker volume inspect --format '{{.Mountpoint}}' mender-artifacts
 git add prod.yml
 git commit -m 'production: final configuration'
 ./run up -d
-sudo ./run exec mender-useradm /usr/bin/useradm create-user --username=mender@example.com --password=Mender@2017
+sudo ./run exec mender-useradm /usr/bin/useradm create-user --username=mender@example.com --password=mender_gcp_ota
 export FULL_PROJECT=$(gcloud config list project --format "value(core.project)")
 export PROJECT="$(echo $FULL_PROJECT | cut -f2 -d ':')"
 export REGION='us-central1'
