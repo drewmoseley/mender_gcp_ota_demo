@@ -30,4 +30,4 @@ IMAGE_INSTALL_append = " \
 ### "
 
 inherit extrausers
-EXTRA_USERS_PARAMS = "usermod -P gcp-mender-2018 root;"
+EXTRA_USERS_PARAMS = "usermod -P mender_gcp_ota root;"
