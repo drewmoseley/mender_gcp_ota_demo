@@ -75,8 +75,10 @@ export MACHINE='raspberrypi3'
 export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE PROJECT_ID REGION_ID REGISTRY_ID"
 
 bitbake ${IMAGE}
+cp ./tmp/deploy/images/${MACHINE}/${IMAGE}-${MACHINE}-*.sdimg ./tmp/deploy/images/${MACHINE}/${IMAGE}-${MACHINE}-*.img
 gsutil cp $(find ./tmp/deploy/images/${MACHINE}/${IMAGE}-${MACHINE}-*.sdimg -type f) gs://$PROJECT_ID-mender-builds/${IMAGE}-${MACHINE}.sdimg
 gsutil cp $(find ./tmp/deploy/images/${MACHINE}/${IMAGE}-${MACHINE}-*.sdimg.bmap -type f) gs://$PROJECT_ID-mender-builds/${IMAGE}-${MACHINE}.sdimg.bmap
+gsutil cp $(find ./tmp/deploy/images/${MACHINE}/${IMAGE}-${MACHINE}-*.img -type f) gs://$PROJECT_ID-mender-builds/${IMAGE}-${MACHINE}.img
 cat >> conf/auto.conf <<-	EOF
 	MENDER_ARTIFACT_NAME = "release-2"
 EOF
