@@ -68,12 +68,11 @@ export FULL_PROJECT=$(gcloud config list project --format "value(core.project)")
 export PROJECT_ID="$(echo $FULL_PROJECT | cut -f2 -d ':')"
 export REGION_ID='us-central1'
 export REGISTRY_ID='mender-demo'
-export DEVICE_ID='mender_ota_rasp3'
 export IMAGE='gcp-mender-demo-image'
 export MACHINE='raspberrypi3'
 
 # Ensure that the GCP variables defined above are passed into the bitbake environment
-export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE PROJECT_ID REGION_ID REGISTRY_ID DEVICE_ID"
+export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE PROJECT_ID REGION_ID REGISTRY_ID"
 
 bitbake ${IMAGE}
 gsutil cp $(find ./tmp/deploy/images/${MACHINE}/${IMAGE}-${MACHINE}-*.sdimg -type f) gs://$PROJECT_ID-mender-builds/${IMAGE}-${MACHINE}.sdimg
