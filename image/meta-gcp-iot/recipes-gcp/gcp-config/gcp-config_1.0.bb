@@ -22,10 +22,6 @@ do_install() {
        echo "Error. REGISTRY_ID bitbake/shell variable unset." >&2
        exit 1
     fi
-    if [ -z "${DEVICE_ID}" ]; then
-       echo "Error. DEVICE_ID bitbake/shell variable unset." >&2
-       exit 1
-    fi
     
     install -m 0700 -d ${D}/opt/gcp${sysconfdir}
     install -m 0700 ${WORKDIR}/gcp-config.sh ${D}/opt/gcp${sysconfdir}
@@ -33,7 +29,6 @@ do_install() {
     sed -i -e 's,@PROJECT_ID@,${PROJECT_ID},g' \
            -e 's,@REGION_ID@,${REGION_ID},g' \
            -e 's,@REGISTRY_ID@,${REGISTRY_ID},g' \
-           -e 's,@DEVICE_ID@,${DEVICE_ID},g' \
            ${D}/opt/gcp${sysconfdir}/gcp-config.sh
 }
 
